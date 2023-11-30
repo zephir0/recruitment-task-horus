@@ -36,8 +36,11 @@ public class Wall implements Structure {
 
     private Stream<Block> combineBlockStreams(Block block) {
         if (block instanceof CompositeBlock) {
-            return Stream.concat(Stream.of(block), ((CompositeBlock) block).getBlocks().stream());
-        } else
+            return Stream.concat(Stream.of(block),
+                    ((CompositeBlock) block).getBlocks().stream().flatMap(this::combineBlockStreams));
+        } else {
             return Stream.of(block);
+        }
     }
+
 }
